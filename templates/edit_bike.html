@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Edit Bike Listing</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ bike.name }}" required>
+        </div>
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="number" class="form-control" id="price" name="price" value="{{ bike.price }}" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" name="description" required>{{ bike.description }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="category">Category</label>
+            <select class="form-control" id="category" name="category" required>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if bike.category.id == category.id %}selected{% endif %}>
+                        {{ category.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Current Images</label>
+            <div class="d-flex flex-wrap">
+                {% for image in bike.images.all %}
+                    <div class="me-2 mb-2">
+                        <img src="{{ image.image.url }}" alt="Bike Image" class="img-thumbnail" style="width: 100px; height: 100px;">
+                        <a href="{% url 'bike_buy_and_sell:delete_bike_image' image.id %}" class="btn btn-danger btn-sm mt-1">Delete</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="images">Add New Images</label>
+            <input type="file" class="form-control" id="images" name="images" multiple>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+    </form>
+</div>
+{% endblock %}

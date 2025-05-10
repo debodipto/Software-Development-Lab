@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+
+<style>
+  /* Improved card design */
+  .card {
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+  .card-img-top {
+    height: 220px;
+    object-fit: cover;
+    border-top-left-radius: calc(0.25rem - 1px);
+    border-top-right-radius: calc(0.25rem - 1px);
+  }
+  /* Improved pagination styling */
+  .pagination .page-item .page-link {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  .pagination .page-item.active .page-link {
+    background-color: #125BFB;
+    border-color: #125BFB;
+    color: #fff;
+  }
+  .pagination .page-item:hover .page-link {
+    background-color: #1953D6;
+    color: #fff;
+  }
+  /* Header style */
+  h2.text-center {
+    background: rgba(62,127,233,0.1);
+    padding: 12px;
+    border-radius: 5px;
+  }
+</style>
+
+<div class="container">
+  <h2 class="text-center mb-4">Available Bikes</h2>
+  
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <form method="get" class="d-flex">
+        <select class="form-select me-2" name="category" onchange="this.form.submit()">
+          <option value="">Select Brands</option>
+          {% for category in categories %}
+            <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>
+              {{ category.name }}
+            </option>
+          {% endfor %}
+        </select>
+        <input type="number" name="min_price" class="form-control me-2" placeholder="Min Price" value="{{ request.GET.min_price }}">
+        <input type="number" name="max_price" class="form-control me-2" placeholder="Max Price" value="{{ request.GET.max_price }}">
+        <button type="submit" class="btn btn-primary">Filter</button>
+      </form>
+    </div>
+  </div>
+  
+  <div class="row g-4">
+    {% for b in bike_buy_and_sell %}
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+          <a href="{% url 'bike_buy_and_sell:product_detail' b.pk %}">
+            {% if b.get_first_image %}
+              <img src="{{ b.get_first_image.image.url }}" class="card-img-top" alt="{{ b.name }}">
+            {% else %}
+              <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="No Image Available">
+            {% endif %}
+          </a>
+          <div class="card-body text-center">
+            <h5 class="card-title">{{ b.name }}</h5>
+            <p class="card-text">{{ b.category }}</p>
+            <p class="card-text"><strong>Price:</strong> BDT: {{ b.price }}</p>
+            <a href="{% url 'bike_buy_and_sell:product_detail' b.pk %}" class="btn btn-primary">View Details</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  
+  <div class="d-flex justify-content-center mt-4">
+    <nav>
+      <ul class="pagination">
+        {% if bike_buy_and_sell.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ bike_buy_and_sell.previous_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}">Previous</a>
+          </li>
+        {% endif %}
+        {% for num in bike_buy_and_sell.paginator.page_range %}
+          <li class="page-item {% if bike_buy_and_sell.number == num %}active{% endif %}">
+            <a class="page-link" href="?page={{ num }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}">{{ num }}</a>
+          </li>
+        {% endfor %}
+        {% if bike_buy_and_sell.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ bike_buy_and_sell.next_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}">Next</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</div>
+{% endblock %}

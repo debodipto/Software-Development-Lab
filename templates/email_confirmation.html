@@ -1,0 +1,4 @@
+<p>Hi {{ user.first_name }},</p>
+<p>Thank you for registering at Bike Source. Please click the link below to activate your account:</p>
+<p><a href="{{ protocol }}://{{ domain }}{% url 'activate' uidb64=uid token=token %}">Activate Account</a></p>
+<p>If you did not register, please ignore this email.</p>

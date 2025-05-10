@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bike Source</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    .navbar-inverse {
+      background-color: #3E7FE9; /* updated */
+      border-color: #3E7FE9;
+    }
+    .navbar-inverse .navbar-brand,
+    .navbar-inverse .navbar-nav > li > a {
+      color: #fff;
+    }
+    .btn-primary {
+      background-color: #125BFB; /* updated */
+      border-color: #125BFB;
+    }
+    .btn-primary:hover {
+      background-color: #1953D6; /* updated */
+      border-color: #1953D6;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse bg-primary">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="{% url 'bike_buy_and_sell:bike_index' %}">Bike Source</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <!-- Removed Home button -->
+        <li><a href="{% url 'bike_buy_and_sell:buy_list' %}">Buy</a></li>
+<!--        <li><a href="{% url 'about' %}">About Us</a></li>-->
+<!--        <li><a href="{% url 'contact' %}">Contact Us</a></li>-->
+      </ul>
+
+
+      <ul class="nav navbar-nav navbar-right">
+
+        {% if request.user.is_authenticated %}
+
+            <li><a href="{% url 'bike_buy_and_sell:sell' %}">Bike Sell</a></li>
+            <li><a href="{% url 'bike_buy_and_sell:sell_list' %}">Bike Sell List</a></li>
+            <li><a href="{% url 'bike_buy_and_sell:profile' %}">Profile</a></li>
+            <li><a href="{% url 'bike_buy_and_sell:booking_list' %}">Booking List</a></li>
+            <li><a href="{% url 'bike_buy_and_sell:change_password' %}">Password Change</a></li>
+            <li><a href="{% url 'bike_buy_and_sell:logout' %}"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
+        {% else %}
+            <li><a href="/admin">Admin</a></li>
+            <li><a href="{% url 'bike_buy_and_sell:registration' %}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+            <li><a href="{% url 'bike_buy_and_sell:login' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        {% endif %}
+          <li>
+              <a href="{% url 'bike_buy_and_sell:cart_detail' %}">
+                  Cart
+                  <span class="item-number ">
+                        {% with total_items=cart|length %}
+                            {{ total_items }}
+                        {% endwith %}
+
+                    </span>
+              </a>
+          </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+  
+<div class="container">
+
+  {% block content %}
+  {% endblock %}
+</div>
+
+</body>
+</html>

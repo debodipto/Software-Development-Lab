@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+
+<div class="container">
+  <div id="carouselExampleIndicators" class="carousel slide mb-4" data-bs-ride="carousel">
+    <!-- Indicators -->
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      {% for banner in banners %}
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ forloop.counter }}" aria-label="Slide {{ forloop.counter }}"></button>
+      {% endfor %}
+    </div>
+
+    <!-- Carousel Items -->
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="https://imgd.aeplcdn.com/1056x594/n/cw/ec/103183/raider-125-right-front-three-quarter-5.png?isig=0&q=80&wm=3" class="d-block w-100 banner-image" alt="Default Banner">
+        <div class="carousel-caption d-none d-md-block">
+          <h5>Welcome to Bike Source</h5>
+          <p>Find the best bikes at unbeatable prices!</p>
+          <a href="{% url 'bike_buy_and_sell:buy_list' %}" class="btn btn-primary">Shop Now</a>
+        </div>
+      </div>
+      {% for banner in banners %}
+        <div class="carousel-item">
+          <img src="{{ banner.banner_image.url }}" class="d-block w-100 banner-image" alt="Banner {{ forloop.counter }}">
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Exclusive Deals</h5>
+            <p>Check out our latest collection of bikes.</p>
+            <a href="{% url 'bike_buy_and_sell:buy_list' %}" class="btn btn-primary">Explore</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Controls -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+  <h2 class="text-center mb-4">Popular Motorcycles</h2>
+  <style>
+    /* Improved card design for homepage product view */
+    .card {
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    .card-img-top {
+      height: 220px;
+      object-fit: cover;
+      border-top-left-radius: calc(0.25rem - 1px);
+      border-top-right-radius: calc(0.25rem - 1px);
+    }
+    h2.text-center {
+      background: rgba(62,127,233,0.1);
+      padding: 12px;
+      border-radius: 5px;
+    }
+  </style>
+  <div class="row g-4">
+    {% for b in bike_buy_and_sell %}
+      <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+          <a href="{% url 'bike_buy_and_sell:product_detail' b.pk %}">
+            {% if b.get_first_image %}
+              <img src="{{ b.get_first_image.image.url }}" class="card-img-top" alt="{{ b.name }}">
+            {% else %}
+              <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="No Image Available">
+            {% endif %}
+          </a>
+          <div class="card-body text-center">
+            <h5 class="card-title">{{ b.name }}</h5>
+            <p class="card-text text-muted">{{ b.category }}</p>
+            <a href="{% url 'bike_buy_and_sell:product_detail' b.pk %}" class="btn btn-primary">View Details</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+<!-- Floating Chat Button -->
+<a href="{% url 'bike_buy_and_sell:chat_support' %}" class="btn btn-primary position-fixed" style="bottom: 20px; right: 20px; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 24px; height: 24px;">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.98 9.98 0 01-5.197-1.582L3 19l1.582-3.803A8.995 8.995 0 012 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+    </svg>
+</a>
+
+{% endblock %}

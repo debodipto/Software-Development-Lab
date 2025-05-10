@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+  /* Improved card design for sell listing */
+  .card {
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  }
+  .card-img-top {
+    height: 220px;
+    object-fit: cover;
+    border-top-left-radius: calc(0.25rem - 1px);
+    border-top-right-radius: calc(0.25rem - 1px);
+  }
+  /* Update header styling */
+  h2.text-center {
+    background: rgba(62,127,233,0.1);
+    padding: 12px;
+    border-radius: 5px;
+  }
+</style>
+
+
+    <h2 class="text-center mb-4">Your Bike Listings</h2>
+
+    <!-- Add New Bike Button -->
+    <div class="text-end mb-3">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBikeModal">Sell Your Bike</button>
+    </div>
+
+    <!-- Add New Bike Modal -->
+    <div class="modal fade" id="addBikeModal" tabindex="-1" aria-labelledby="addBikeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="addBikeModalLabel">Sell Your Bike</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="id_name" name="name" placeholder="Enter Name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="price" class="form-label">Price</label>
+                                <input type="number" class="form-control" id="id_price" name="price" placeholder="Enter Price" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="category">Category</label>
+                                <select class="form-control" id="id_category" name="category" required>
+                                    <option value="" selected disabled>Select Category</option>
+                                    {% for c in categories %}
+                                        <option value="{{ c.id }}">{{ c.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" id="id_description" name="description" placeholder="Enter Description" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="image">Image</label>
+                            <input type="file" class="form-control-file" id="id_image" name="image" multiple required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Add Bike</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bike Listings -->
+    <div class="row g-4">
+        {% for bike in bike_buy_and_sell %}
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <a href="{% url 'bike_buy_and_sell:product_detail' bike.pk %}">
+                        {% if bike.get_first_image %}
+                            <img src="{{ bike.get_first_image.image.url }}" class="card-img-top" alt="{{ bike.name }}">
+                        {% else %}
+                            <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="No Image Available">
+                        {% endif %}
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ bike.name }}</h5>
+                        <p class="card-text text-muted">{{ bike.category.name }}</p>
+                        <p class="card-text"><strong>Price:</strong> BDT: {{ bike.price }}</p>
+                        <p class="card-text"><strong>Status:</strong> {{ bike.status }}</p>
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'bike_buy_and_sell:edit_bike' bike.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                            <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ bike.pk }}">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-center">You have no bike listings.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+{% for bike in bike_buy_and_sell %}
+<div class="modal fade" id="deleteModal{{ bike.pk }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ bike.pk }}" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel{{ bike.pk }}">Confirm Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete the bike "{{ bike.name }}"?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <a href="{% url 'bike_buy_and_sell:delete_bike' bike.pk %}" class="btn btn-danger">Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+{% endblock %}
+
+<script>
+  // Autocomplete functionality for the search bar
+  document.addEventListener('DOMContentLoaded', function () {
+    const searchBar = document.getElementById('search-bar');
+    const suggestions = ['Mountain Bike', 'Road Bike', 'Hybrid Bike']; // Replace with dynamic data
+    searchBar.addEventListener('input', function () {
+      const query = searchBar.value.toLowerCase();
+      const matches = suggestions.filter(item => item.toLowerCase().includes(query));
+      console.log(matches); // Replace with UI rendering logic
+    });
+  });
+</script>

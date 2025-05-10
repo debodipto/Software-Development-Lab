@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+  <div class="card shadow-lg">
+    <div class="card-header bg-primary text-white text-center">
+      <h3>My Profile</h3>
+    </div>
+    <div class="card-body">
+      <div class="row align-items-center">
+        <div class="col-md-4 text-center mb-4 mb-md-0">
+          {% if profile and profile.profile_picture %}
+            <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;">
+          {% else %}
+            <img src="https://via.placeholder.com/150" alt="Default Profile Picture" class="rounded-circle img-fluid">
+          {% endif %}
+        </div>
+        <div class="col-md-8">
+          <h4 class="text-primary">{{ user.username }}</h4>
+          <p class="mb-1"><strong>Email:</strong> {{ user.email }}</p>
+          <p class="mb-1"><strong>First Name:</strong> {{ user.first_name }}</p>
+          <p class="mb-1"><strong>Last Name:</strong> {{ user.last_name }}</p>
+          <p class="mb-1"><strong>Date Joined:</strong> {{ user.date_joined|date:"M d, Y" }}</p>
+          <p class="mb-1"><strong>Last Login:</strong> {{ user.last_login|date:"M d, Y H:i" }}</p>
+          <div class="mt-4">
+            <a href="{% url 'bike_buy_and_sell:update_profile' %}" class="btn btn-outline-primary me-2">Update Profile</a>
+            <a href="{% url 'bike_buy_and_sell:change_password' %}" class="btn btn-secondary me-2">Change Password</a>
+            <a href="{% url 'bike_buy_and_sell:booking_list' %}" class="btn btn-info">Order History</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

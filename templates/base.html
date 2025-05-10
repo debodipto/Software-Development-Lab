@@ -1,0 +1,397 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bike Source</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <!-- Added modern CSS stylesheet -->
+  <link rel="stylesheet" href="{% static 'css/modern.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Added FontAwesome for chat support icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif; /* Updated to use Inter font */
+      background-color: #c9fbed; /* Updated */
+      color: #333;
+      transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+    }
+
+    .navbar {
+      background-color: #73e6cb; /* Updated */
+    }
+
+    .navbar-brand, .nav-link {
+      color: #1f473e !important;
+    }
+
+    .navbar-brand:hover, .nav-link:hover {
+      color: #479281 !important; /* Updated */
+    }
+
+    .btn-primary {
+      background-color: #5cbba5; /* Updated */
+      border-color: #5cbba5;
+    }
+
+    .btn-primary:hover {
+      background-color: #479281; /* Updated */
+      border-color: #479281;
+    }
+
+    footer {
+      background-color: #326b5e; /* Updated */
+      color: #fff;
+      padding: 20px 0;
+      text-align: center;
+    }
+
+    footer a {
+      color: #1f473e; /* Updated */
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    .card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .dark-mode {
+      background-color: #121212;
+      color: #fff;
+    }
+
+    .dark-mode .navbar {
+      background-color: #333;
+    }
+
+    .dark-mode .card {
+      background-color: #1e1e1e;
+      color: #fff;
+    }
+
+    .dark-mode .btn-primary {
+      background-color: #444;
+      border-color: #222;
+    }
+
+    .dark-mode footer {
+      background-color: #1e1e1e;
+      color: #fff;
+    }
+
+    .carousel-caption {
+        background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .carousel-caption h5 {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+
+    .carousel-caption p {
+        font-size: 1.2rem;
+    }
+
+    .carousel-caption .btn {
+        font-size: 1rem;
+        padding: 10px 20px;
+    }
+
+    .banner-image {
+        height: 400px; /* Set a standard height for the banner */
+        object-fit: cover; /* Ensure the image scales proportionally */
+    }
+
+    @media (max-width: 768px) {
+        .banner-image {
+            height: 250px; /* Adjust height for smaller screens */
+        }
+    }
+
+    /* New chat button styles */
+    .chat-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #5cbba5; /* Updated */
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      text-decoration: none;
+      z-index: 1000;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    .chat-button:hover {
+      background-color: #479281; /* Updated */
+      transform: scale(1.1);
+    }
+
+    .cart-button {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      background-color: #5cbba5; /* Updated */
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      text-decoration: none;
+      z-index: 1000;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .cart-button:hover {
+      background-color: #479281; /* Updated */
+      transform: scale(1.1);
+    }
+
+    .cart-count {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background-color: #479281; /* Updated */
+      color: #fff;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'bike_buy_and_sell:bike_index' %}">Bike Source</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <!-- Removed Home button -->
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.url_name == 'buy_list' %}active{% endif %}" href="{% url 'bike_buy_and_sell:buy_list' %}">Buy</a>
+        </li>
+        {% if request.user.is_authenticated %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ request.user.username }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+              <li><a class="dropdown-item" href="{% url 'bike_buy_and_sell:profile' %}">Profile</a></li>
+              <li><a class="dropdown-item" href="{% url 'bike_buy_and_sell:sell_list' %}">Sell List</a></li>
+              <li><a class="dropdown-item" href="{% url 'bike_buy_and_sell:logout' %}">Logout</a></li>
+            </ul>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'bike_buy_and_sell:registration' %}">Sign Up</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'bike_buy_and_sell:login' %}">Login</a>
+          </li>
+        {% endif %}
+        <li class="nav-item">
+          <button id="darkModeToggle" class="btn btn-outline-light ms-2" onclick="toggleDarkMode()">
+            <span id="darkModeIcon">🌙</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4">
+  {# Display Django messages #}
+  {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} mt-2">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+  
+  {% block content %}
+  {% endblock %}
+</div>
+
+<!-- Replace the existing floating chat button -->
+{% if request.user.is_authenticated %}
+    <button type="button" class="chat-button" data-bs-toggle="modal" data-bs-target="#chatModal" style="border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 24px; height: 24px;">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.98 9.98 0 01-5.197-1.582L3 19l1.582-3.803A8.995 8.995 0 012 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+        </svg>
+    </button>
+{% else %}
+    <button type="button" class="chat-button" onclick="alert('Please log in to use chat support');" style="border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 24px; height: 24px;">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.98 9.98 0 01-5.197-1.582L3 19l1.582-3.803A8.995 8.995 0 012 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+        </svg>
+    </button>
+{% endif %}
+
+<!-- Floating Cart Button -->
+<a href="{% url 'bike_buy_and_sell:cart_detail' %}" class="cart-button">
+  🛒
+  <span class="cart-count">
+    {% with total_items=cart|length %}
+      {{ total_items }}
+    {% endwith %}
+  </span>
+</a>
+
+{% if request.resolver_match.url_name == 'bike_index' %}
+<footer>
+  <p>&copy; 2025 Bike Source. All rights reserved. | <a href="{% url 'bike_buy_and_sell:contact' %}">Contact Us</a></p>
+</footer>
+{% endif %}
+
+<!-- Back-to-Top Button -->
+<button id="backToTop" class="btn btn-primary position-fixed" style="bottom: 20px; right: 20px; display: none;">
+  ↑
+</button>
+
+<!-- Add the Chat Modal markup before the closing </body> tag -->
+<div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="chatModalLabel">Chat Support</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="chatModalContent">
+        <!-- Chat content will be loaded here -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Function to toggle dark mode with icon change
+  function toggleDarkMode() {
+    const body = document.body;
+    const icon = document.getElementById('darkModeIcon');
+    body.classList.toggle('dark-mode');
+    if (body.classList.contains('dark-mode')) {
+      icon.textContent = "☀️";
+      localStorage.setItem('theme', 'dark');
+    } else {
+      icon.textContent = "🌙";
+      localStorage.setItem('theme', 'light');
+    }
+  }
+
+  // Apply the saved theme on page load and update icon
+  document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme');
+    const icon = document.getElementById('darkModeIcon');
+    if (savedTheme === 'dark') {
+      document.body.classList.add('dark-mode');
+      icon.textContent = "☀️";
+    } else {
+      icon.textContent = "🌙";
+    }
+  });
+
+  // Back-to-Top Button Logic
+  const backToTopButton = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      backToTopButton.style.display = 'block';
+    } else {
+      backToTopButton.style.display = 'none';
+    }
+  });
+  backToTopButton.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // When the chat modal is shown, load the chat popup content via AJAX
+  const chatModal = document.getElementById('chatModal');
+  chatModal.addEventListener('shown.bs.modal', async () => {
+    try {
+      const response = await fetch("{% url 'bike_buy_and_sell:chat_support_popup' %}");
+      if (response.ok) {
+        document.getElementById('chatModalContent').innerHTML = await response.text();
+        // Bind the chat form submit event after the modal content loads
+        bindChatFormPopup();
+        // Auto-scroll chat box to bottom after loading the modal content
+        const chatBox = document.querySelector('#chatModalContent .chat-box');
+        if(chatBox) { chatBox.scrollTop = chatBox.scrollHeight; }
+      } else {
+        document.getElementById('chatModalContent').innerHTML = "<p>Error loading chat. Please try again.</p>";
+      }
+    } catch (error) {
+      console.error('Error fetching chat:', error);
+      document.getElementById('chatModalContent').innerHTML = "<p>Error loading chat. Please try again.</p>";
+    }
+  });
+
+  // New function to bind the chat popup form submission
+  function bindChatFormPopup() {
+    const chatForm = document.getElementById('chatFormPopup');
+    if (chatForm) {
+      chatForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const formData = new FormData(chatForm);
+        const csrfToken = document.querySelector('#chatFormPopup [name=csrfmiddlewaretoken]').value;
+        try {
+          const response = await fetch("{% url 'bike_buy_and_sell:chat_support' %}", {
+            method: 'POST',
+            body: formData,
+            headers: { 'X-CSRFToken': csrfToken }
+          });
+          if (response.ok) {
+            // Reload the popup content after sending the message
+            const res = await fetch("{% url 'bike_buy_and_sell:chat_support_popup' %}");
+            if(res.ok) {
+              document.getElementById('chatModalContent').innerHTML = await res.text();
+              // Rebind event after reloading content
+              bindChatFormPopup();
+              // Ensure the chat box scrolls to the bottom every time it reloads
+              const chatBox = document.querySelector('#chatModalContent .chat-box');
+              if(chatBox) { chatBox.scrollTop = chatBox.scrollHeight; }
+            }
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      });
+    }
+  }
+</script>
+
+</body>
+</html>
+

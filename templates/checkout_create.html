@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="container my-5">
+  <div class="row">
+    <!-- Billing Details Form -->
+    <div class="col-md-8">
+      <h4 class="mb-4">Billing Details</h4>
+      <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+          {% render_field form.email class="form-control" placeholder="Enter your email address" %}
+        </div>
+        <div class="mb-3">
+          <label for="{{ form.mobile.id_for_label }}" class="form-label">Mobile</label>
+          {% render_field form.mobile class="form-control" placeholder="Enter your mobile number" %}
+        </div>
+        <div class="mb-3">
+          <label for="{{ form.address.id_for_label }}" class="form-label">Address</label>
+          {% render_field form.address class="form-control" placeholder="Enter your delivery address" %}
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Submit Order</button>
+      </form>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Your Order</h5>
+        </div>
+        <ul class="list-group list-group-flush">
+          {% for item in cart %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              {{ item.quantity }} x {{ item.product.name }}
+              <span>Taka {{ item.total_price|floatformat:2 }}</span>
+            </li>
+          {% endfor %}
+          <li class="list-group-item d-flex justify-content-between align-items-center bg-primary text-white">
+            <strong>Total Cost:</strong>
+            <strong>Taka {{ cart.get_total_price|floatformat:2 }}</strong>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+<html>
+<head>
+  <title>Reply to Chat Message</title>
+  <style>
+    .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+    .card { border: 1px solid #ddd; border-radius: 4px; margin-top: 20px; }
+    .card-header { background: #f5f5f5; padding: 10px 15px; font-size: 1.25em; }
+    .card-body { padding: 15px; }
+    .mb-4 { margin-bottom: 1.5rem; }
+    .mt-4 { margin-top: 1.5rem; }
+    .btn { padding: 0.5rem 1rem; text-decoration: none; border: 1px solid transparent; border-radius: 4px; }
+    .btn-secondary { background-color: #6c757d; color: #fff; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="mb-4">Reply to Chat Message</h1>
+    <p><strong>Original Message:</strong> {{ original_message.message }}</p>
+    <p><strong>From:</strong> {{ original_message.user.username }} on {{ original_message.timestamp }}</p>
+    <form method="post" class="mb-4">
+      {% csrf_token %}
+      <div>
+        <label for="reply">Your Reply:</label><br>
+        <textarea name="reply" id="reply" cols="40" rows="5" required></textarea>
+      </div>
+      <br>
+      <button type="submit" class="btn btn-secondary">Send Reply</button>
+    </form>
+    <div class="card">
+      <div class="card-header">Chat History</div>
+      <div class="card-body">
+        {% for msg in chat_history %}
+          <p><strong>{% if msg.is_admin %}Admin{% else %}{{ msg.user.username }}{% endif %}:</strong> {{ msg.message }} <em>({{ msg.timestamp }})</em></p>
+        {% endfor %}
+      </div>
+    </div>
+    <a href="{% url 'admin:bike_buy_and_sell_chatmessage_changelist' %}" class="btn btn-secondary mt-4">Back to Chat Messages</a>
+  </div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Sell Your Bike</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="name" class="form-label text-secondary">Name</label>
+                            <input type="text" class="form-control border-primary" id="id_name" name="name" placeholder="Enter the bike name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label text-secondary">Description</label>
+                            <textarea class="form-control border-primary" id="id_description" name="description" placeholder="Provide a detailed description" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="price" class="form-label text-secondary">Price</label>
+                            <input type="number" class="form-control border-primary" id="id_price" name="price" placeholder="Enter the price in Taka" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="category" class="form-label text-secondary">Brand</label>
+                            <select class="form-control border-primary" id="id_category" name="category" required>
+                                <option value="" disabled selected>Select Brand</option>
+                                {% for c in category %}
+                                    <option value="{{ c.id }}">{{ c.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="image" class="form-label text-secondary">Image</label>
+                            <input type="file" class="form-control border-primary" id="id_image" name="image" multiple required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

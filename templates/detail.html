@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Bike Image Section -->
+        <div class="col-md-6">
+            <div id="bikeImageCarousel" class="carousel slide border rounded shadow-sm" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    {% if product.get_first_image %}
+                        {% for image in product.images.all %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                <img src="{{ image.image.url }}" class="d-block w-100 rounded" alt="{{ product.name }}">
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="carousel-item active">
+                            <img src="https://via.placeholder.com/400x300" class="d-block w-100 rounded" alt="No Image Available">
+                        </div>
+                    {% endif %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#bikeImageCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#bikeImageCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Bike Details Section -->
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <!-- Product Information -->
+                    <div class="mb-4">
+                        <h3 class="text-primary">{{ product.name }}</h3>
+                        <h6 class="text-muted">{{ product.category.name }}</h6>
+                        <p class="mb-2">{{ product.description|safe|linebreaksbr }}</p>
+                        <p><strong>Price:</strong> BDT: {{ product.price }}</p>
+                    </div>
+                    <!-- Seller Information -->
+                    <div class="card mb-3">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Seller Information</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-1"><strong>Name:</strong> {{ seller.first_name }} {{ seller.last_name }}</p>
+                            <p class="mb-1"><strong>Email:</strong> <a href="mailto:{{ seller.email }}" class="text-decoration-none">{{ seller.email }}</a></p>
+                            <p class="mb-0"><strong>Username:</strong> {{ seller.username }}</p>
+                        </div>
+                    </div>
+                    <!-- Add to Cart Button -->
+                    <form action="{% url 'bike_buy_and_sell:cart_add' product.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary w-100">Add to Cart</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

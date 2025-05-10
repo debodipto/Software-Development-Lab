@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="card p-4 shadow-lg" style="width: 100%; max-width: 400px; border-radius: 15px;">
+        <h3 class="text-center mb-4 text-primary">Sign Up</h3>
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="mb-3">
+                    <label for="{{ field.id_for_label }}" class="form-label text-secondary">{{ field.label }}</label>
+                    {{ field|add_class:'form-control border-primary' }}
+                    {% for error in field.errors %}
+                        <span class="text-danger small">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary w-100">Register</button>
+        </form>
+        <div class="text-center mt-3">
+            <a href="{% url 'bike_buy_and_sell:login' %}" class="text-primary">Already have an account? Log In</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

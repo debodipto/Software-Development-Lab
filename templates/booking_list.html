@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+
+<table class="table">
+    <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Username</th>
+          <th scope="col">Email</th>
+          <th scope="col">Phone</th>
+          <th scope="col">Address</th>
+          <th scope="col">Created Date</th>
+          <th scope="col">Total Price</th>
+          <th scope="col">Status</th>
+          <th scope="col"></th>
+        </tr>
+    </thead>
+          <tbody>
+           {% for book in booking_list %}
+                <tr>
+                  <th scope="row">{{ book.id }}</th>
+                  <th scope="row">{{ book.username }}</th>
+                  <td>{{ book.email }}</td>
+                  <td>{{ book.mobile }}</td>
+                  <td>{{ book.address }}</td>
+                  <td>{{ book.created_at }}</td>
+                  <td>{{ book.total_price }}</td>
+                  <td>{{ book.status }}</td>
+                    <td>
+                        <a href="{% url 'bike_buy_and_sell:order_details' book.id %}">Details</a>
+                    </td>
+                </tr>
+           {% endfor %}
+          </tbody>
+</table>
+
+{% endblock content %}

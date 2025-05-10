@@ -1,0 +1,35 @@
+{% extends 'admin/base_site.html' %}
+{% block content %}
+<h1>Order Details</h1>
+<p><strong>Order ID:</strong> {{ order.id }}</p>
+<p><strong>User:</strong> {{ order.user.username }}</p>
+<p><strong>Email:</strong> {{ order.email }}</p>
+<p><strong>Mobile:</strong> {{ order.mobile }}</p>
+<p><strong>Address:</strong> {{ order.address }}</p>
+<p><strong>Total Price:</strong> {{ order.total_price }}</p>
+<p><strong>Status:</strong> {{ order.status }}</p>
+<p><strong>Order Date:</strong> {{ order.order_date }}</p>
+
+<h2>Items</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.bike_buy_and_sell.name }}</td>
+            <td>{{ item.price }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.get_cost }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'admin:bike_buy_and_sell_orders_changelist' %}" class="btn btn-secondary">Back to Orders</a>
+{% endblock %}

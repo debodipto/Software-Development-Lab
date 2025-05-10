@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <br><br><br>
+
+<center>
+    <h2>You've logged out successfully!</h2>
+</center>
+    <center>You are not logged in</center>
+<center>
+<a href="{% url 'bike_buy_and_sell:login' %}" class="align-center">Log In</a>
+</center>
+
+<br><br><br><br><br>
+<br><br><br><br><br>
+<br><br><br>
+{% endblock %}

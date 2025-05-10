@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+
+
+{% if bike_buy_and_sell %}
+
+    <div class="container-fluid">
+        <div class="navbar-search smallsearch col-sm-7 col-xs-11">
+              <form action="{% url 'search' %}" method="get">
+                <div class="row">
+                    <input class="form-control col-xl-11" type="search" placeholder="Search for names and more" name="query" id="query">
+<br>
+                     <button type="submit" class="btn btn-primary">Search</button>
+
+                </div>
+              </form>
+            </div>
+
+        <br>
+        <br>
+
+        <div class="row" style="margin-top: 6%">
+            <div class="col-sm-8 blog-main">
+                <div class="blog-post">
+                    <div class="row">
+                        {% for b in bike_buy_and_sell %}
+                            <div class="col-md-4">
+                                <div class="thumbnail">
+                                     <a href="{% url 'bike_buy_and_sell:product_detail' b.pk %}">
+                                        {% if b.get_first_image %}
+                                            <img class="project__thumbnail" src="{{b.get_first_image.image.url}}" alt="project thumbnail" />
+                                         {% else %}
+                                         <img class="project__thumbnail"
+                                              src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png" alt="project thumbnail" />
+                                         {% endif %}
+                                        </a>
+
+                                        <div class="caption">
+                                            <h3 class="text-center">
+                                                <a href="{% url 'bike_buy_and_sell:product_detail' b.pk %}">{{ b.name }}</a>
+                                            </h3>
+                                            <p class="text-center">{{ b.category }}</p>
+                                        </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                 </div><!-- /.blog-post -->
+                </div><!-- /.blog-main -->
+
+            </div><!-- /.row -->
+    </div>
+    <!-- /.container -->
+
+{% else %}
+<h3 style="text-align:center; color:#3E454C;">No Search Found</h3>
+{% endif %}
+
+{% endblock %}
