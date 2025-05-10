@@ -1,0 +1,132 @@
+:root {
+  --primary-color: #c9fbed;    /* updated */
+  --secondary-color: #73e6cb;  /* updated */
+  --accent-color: #5cbba5;     /* updated */
+  --text-color: #0d2520;       /* updated */
+  --bg-color: #c9fbed;         /* updated */
+  --dark-bg-color: #0d2520;    /* updated */
+  --font-family: 'Inter', sans-serif; /* Updated to use Inter font */
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+}
+
+/* Use a modern grid layout for container sections */
+.container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  padding: 20px;
+}
+
+/* Modern Navbar */
+.navbar {
+  background-color: var(--secondary-color);
+  padding: 10px 20px;
+}
+
+.navbar a.nav-link,
+.navbar-brand {
+  color: #754C00 !important;
+  transition: color 0.3s ease;
+}
+
+.navbar a.nav-link:hover,
+.navbar-brand:hover {
+  color: var(--accent-color) !important;
+}
+
+/* Card styling with smooth shadow and lift effect */
+.card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer styled with grid */
+footer {
+  display: grid;
+  place-items: center;
+  background-color: var(--accent-color);
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+footer a {
+  color: #754C00;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* Dark mode modifications */
+.dark-mode {
+  background-color: var(--dark-bg-color);
+  color: #fff;
+}
+
+.dark-mode .card {
+  background-color: #1e1e1e;
+  color: #fff;
+}
+
+.dark-mode .navbar {
+  background-color: #333;
+}
+
+.dark-mode footer {
+  background-color: #1e1e1e;
+}
+
+.btn-primary {
+  background-color: #ff4d00; /* Updated */
+  border-color: #ff4d00;
+  color: #fff;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: #ff0000; /* Updated */
+  border-color: #ff0000;
+  transform: scale(1.05);
+}
+
+/* Typography improvements */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+p {
+  margin-bottom: 10px;
+}
+
+/* White space and alignment */
+a:hover {
+  text-decoration: underline;
+}
+
+input, select, textarea {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+  width: 100%;
+  box-sizing: border-box;
+}
